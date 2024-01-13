@@ -12,6 +12,7 @@ import { useState, useEffect } from "react";
 export default function App() {
   const [postList, setPostList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
 
   const fetchData = async (limit = 10) => {
     const response = await fetch(
@@ -25,6 +26,12 @@ export default function App() {
   useEffect(() => {
     fetchData();
   }, []);
+
+  const handleRefresh = () => {
+    setRefreshing(true)
+    fetchData(20) //* to fetch additional 10 items on refreshing
+    setRefreshing(false)
+  }
 
   if (isLoading) {
     return (
@@ -55,6 +62,8 @@ export default function App() {
           ListFooterComponent={
             <Text style={styles.footerText}>End of list</Text>
           }
+          refreshing={refreshing}
+          onRefresh={handleRefresh}
         />
       </View>
     </SafeAreaView>
