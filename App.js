@@ -5,21 +5,35 @@ import {
   StatusBar,
   View,
   FlatList,
+  ActivityIndicator,
 } from "react-native";
 import { useState, useEffect } from "react";
 
 export default function App() {
   const [postList, setPostList] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
   const fetchData = async (limit = 10) => {
     const response = await fetch(
       `https://jsonplaceholder.typicode.com/posts?limit=${limit}`
     );
     const data = await response.json();
     setPostList(data);
+    setIsLoading(false);
   };
+
   useEffect(() => {
     fetchData();
   }, []);
+
+  if (isLoading) {
+    return (
+      <SafeAreaView style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#00f" />
+        <Text>Loading..</Text>
+      </SafeAreaView>
+    );
+  }
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.listContainer}>
@@ -38,7 +52,9 @@ export default function App() {
           ListHeaderComponent={
             <Text style={styles.headerText}>Post Lists</Text>
           }
-          ListFooterComponent={<Text style={styles.footerText}>End of list</Text>}
+          ListFooterComponent={
+            <Text style={styles.footerText}>End of list</Text>
+          }
         />
       </View>
     </SafeAreaView>
@@ -78,4 +94,11 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: 12,
   },
+  loadingContainer: {
+    flex: 1,
+    backgroundColor: "#f5f5f5",
+    paddingTop: StatusBar.currentHeight,
+    justifyContent: "center",
+    alignItems: "center",
+  }
 });
