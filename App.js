@@ -196,13 +196,14 @@ const styles = StyleSheet.create({
   errorContainer: {
     backgroundColor: "#ffc0cb",
     padding: 16,
-    borderRadius: 8, borderWidth: 1,
+    borderRadius: 8,
+    borderWidth: 1,
     margin: 16,
     alignItems: "center",
   },
   errorText: {
     color: "#d8000c",
     fontSize: 16,
-    textAlign: "center"
-  }
+    textAlign: "center",
+  },
 });
